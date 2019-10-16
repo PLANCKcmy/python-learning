@@ -56,12 +56,8 @@ def game(a):
 	print(f'the right answer is {num}')
 	return time,score
 
-'''游戏'''
-
-
 print('what you name?')
 name=input()
-
 print('choose to begin game or not?')
 begin=int(input('0 or 1 \n'))
 if is_begin(begin)== True:
@@ -69,54 +65,51 @@ if is_begin(begin)== True:
 	nowtime=10-float(dataname[0])
 	nowscore=float(dataname[1])
 	print(nowtime,nowscore)
-#with open('gameguess.txt','w+') as file:
-#	data=f'name:{name}\nnowtime:{time}\nnowscore:{score}\navergetime:{time}\navergescore:{score}\nplaytimes:{play}'
-#	file.write(data)
-# 
-
-
-
-
-
+#开始游戏承接函数
 
 with open('gameguess.txt','r') as file1:
 	lines=file1.readlines()
+	file1.close
 
-	scores={}
-	for line in lines:
-		data=line.split(' ')
-		scores[data[0]]=data[1:]
-		#将现有的成绩添加进去，名字是key，后面的是value
+scores={}
+for line in lines:
+	data=line.split(' ')
+	scores[data[0]]=data[1:]
+	#将现有的成绩添加进去，名字是key，后面的是value
 
-	score=scores.get(name)
-	if score==None:
-		score=[0,0,0]
-		#确认是否有成绩，如果没有就重新生成一个
+score=scores.get(name)
+if score==None:
+	score=[0,0,0]
+	#确认是否有成绩，如果没有就重新生成一个
 
-	avergetime=score[0]
-	avergescore=score[1]
-	playtimes=score[2]
-	#找到已有成绩
-	playtimes=int(playtimes)+1
-	avergetime=(float(avergetime)*(playtimes-1)+float(nowtime))/playtimes
-	avergescore=(float(avergescore)*(playtimes-1)+float(nowscore))/playtimes
-	playtimes=str(playtimes)
-	avergescore=str(avergescore)
-	avergetime=str(avergetime)
-	#计算成绩
-	
-	score=[avergetime,avergescore,playtimes]
-	scores[name]=score
-	read=''
-	for i in scores:
-		score=' '.join(scores[i])
-		line=f'{i} {score}\n'
-		read=read+line
+avergetime=score[0]
+avergescore=score[1]
+playtimes=score[2]
+#找到已有成绩
 
+playtimes=int(playtimes)+1
+avergetime=(float(avergetime)*(playtimes-1)+float(nowtime))/playtimes
+avergescore=(float(avergescore)*(playtimes-1)+float(nowscore))/playtimes
+playtimes=str(playtimes)
+avergescore=str(avergescore)
+avergetime=str(avergetime)
+#计算成绩,并转化函数
 
-	with open('gameguess.txt','w+') as file:
-		file.write(read)
+score=[avergetime,avergescore,playtimes]
+scores[name]=score
+read=''
+for i in scores:
+	score=' '.join(scores[i])
+	line=f'{i} {score}'
+	read=read+line
+#将过去的数据一同存储
+
+with open('gameguess.txt','w+') as file:
+	file.write(read)
+	file.close
 
 print(f'name:{name}\nnowtime:{nowtime}\nnowscore:{nowscore}\navergetime:{avergetime}\navergescore:{avergescore}\nplaytimes:{playtimes}')
+
 with open('gameguess.txt','r') as file:
 	print(file.read())
+	file.close
